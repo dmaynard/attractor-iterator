@@ -30,40 +30,46 @@ export class AttractorObj {
     console.log ( "New AttractorObg creates randomize is ", randomize);
     /* eslint-enable no-console */
   }
-  calculateFrame(budget, firstFrame) {
+  calculateFrame(budget, firstFrame, nFirstFrames) {
     let startTime = performance.now();
     let msElapsed = 0;
     let loopCount = 0;
-    while (msElapsed < budget) {
-      this.iters++;
-      loopCount++;
-      [this.x, this.y] = this.iteratePoint(this.x, this.y, firstFrame);
-      if ((loopCount & 0x3f) == 0) {
-        msElapsed = performance.now() - startTime;
+    if (firstFrame) {
+      while (this.iters < nFirstFrames) {
+        this.iters++;
+        loopCount++;
+        [this.x, this.y] = this.iteratePoint(this.x, this.y);
+        if (this.x < this.xmin) this.xmin = this.x;
+        if (this.x > this.xmax) this.xmax = this.x;
+        if (this.y < this.ymin) this.ymin = this.y;
+        if (this.y > this.ymax) this.ymax = this.y;
       }
-    }
+      this.xRange = this.xmax - this.xmin;
+      this.yRange = this.ymax - this.ymin;
+
+    } else {
+      while (msElapsed < budget) {
+        this.iters++;
+        loopCount++;
+        [this.x, this.y] = this.iteratePoint(this.x, this.y);
+        this.decPixel(this.pixelx(this.x), this.pixely(this.y));
+        if ((loopCount & 0x3f) == 0) {
+          msElapsed = performance.now() - startTime;
+        }
+      
+      }
+   }
     return loopCount; //
   }
 
-  iteratePoint(x, y, firstFrame) {
+  iteratePoint(x, y) {
     let nx =
       Math.sin(y * this.params[1]) -
       this.params[2] * Math.sin(x * this.params[1]);
     let ny =
       Math.sin(x * this.params[0]) +
       this.params[3] * Math.cos(y * this.params[0]);
-
-    if (firstFrame) {
-      if (nx < this.xmin) this.xmin = nx;
-      if (nx > this.xmax) this.xmax = nx;
-      if (ny < this.ymin) this.ymin = ny;
-      if (ny > this.ymax) this.ymax = ny;
-      this.xRange = this.xmax - this.xmin;
-      this.yRange = this.ymax - this.ymin;
-    } else {
       // Assumes white background with black attractor
-      this.decPixel(this.pixelx(nx), this.pixely(ny));
-    }
     return [nx, ny];
   }
   pixelx(x) {
