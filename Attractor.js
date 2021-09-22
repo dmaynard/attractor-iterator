@@ -35,6 +35,8 @@ export class AttractorObj {
     let msElapsed = 0;
     let loopCount = 0;
     if (firstFrame) {
+      this.x = this.params[4];
+      this.y = this.params[5];
       while (this.iters < nFirstFrames) {
         this.iters++;
         loopCount++;
