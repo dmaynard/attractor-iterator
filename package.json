@@ -1,6 +1,6 @@
 {
   "name": "@davidsmaynard/attractor_iterator",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Javascipt iterator to compute one animation frame of a chaotic attractor",
   "main": "Attractor.js",
   "scripts": {
@@ -15,8 +15,5 @@
   "bugs": {
     "url": "https://github.com/dmaynard/attractor-iterator/issues"
   },
-  "homepage": "https://github.com/dmaynard/attractor-iterator#readme",
-  "devDependencies": {
-    "mocha": "^9.1.0"
-  }
+  "homepage": "https://github.com/dmaynard/attractor-iterator#readme"
 }

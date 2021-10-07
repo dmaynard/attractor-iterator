@@ -15,3 +15,7 @@ y = sin(a*x) + d cos(a*y)
 
 where a, b, c, d are variables that define each attractor.
 For each new image the four variables are chosen at random. Next the point (x,y) is iterated to a new point (x, y). This point is then mapped into the image space to select a pixel. This pixel in the image is made one point darker on a scale of [255, 0] = [pure white, pure black]. The pixels are iterated continuously in this manner for a specified number of milliseconds, usually 15, or just less then one full animation frame. The module keeps track of how many total iterations have been completed, how many different pixels have been touched, and how many pixels have been completely blackened (RGB=0,0,0). This information is then used by the calling program to decide whether to continue iterating for another animation frame, or pause the iteration or to start iterating a new attractor.
+
+```
+npm publish --access public
+```
