@@ -14,6 +14,8 @@ var xRange = 1.0;
 var yRange = 1.0;
 var nTouched = 0;
 var nMaxed = 0;
+var bufferSize = 0;
+var savedBuffer = null;
 
 
 export class AttractorObj {
@@ -44,10 +46,20 @@ export class AttractorObj {
     xRange = 1.0;
     yRange = 1.0;
 
-    this.data = new Uint8ClampedArray(width * height * 4).map(() => 255); // RGBA
+    if ( bufferSize != (width*height*4)) {
+      bufferSize = width * height * 4;
+      this.data = new Uint8ClampedArray(width * height * 4).map(() => 255); // RGBA
+      savedBuffer = this.data;
     /* eslint-disable no-console */
-    console.log ( "New AttractorObg creates randomize is ", randomize);
+      console.log ( "New AttractorObj allocating ", bufferSize );
     /* eslint-enable no-console */
+    } else {
+      this.data = savedBuffer;
+          /* eslint-disable no-console */
+          console.log ( "Initializing bytes ", bufferSize );
+          /* eslint-enable no-console */
+      this.data.fill(255);
+    }
   }
   getnTouched() {
     return nTouched;
