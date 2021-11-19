@@ -48,7 +48,8 @@ export class AttractorObj {
 
     if ( bufferSize != (width*height*4)) {
       bufferSize = width * height * 4;
-      this.data = new Uint8ClampedArray(width * height * 4).map(() => 255); // RGBA
+      this.data = new Uint8ClampedArray(width * height * 4); // RGBA
+      this.data.fill(255);
       savedBuffer = this.data;
     /* eslint-disable no-console */
       console.log ( "New AttractorObj allocating ", bufferSize );
