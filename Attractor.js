@@ -119,14 +119,9 @@ export class AttractorObj {
   }
 
   iteratePoint(x, y) {
-    let nx =
-      Math.sin(y * b) -
-      c * Math.sin(x * b);
-    let ny =
-      Math.sin(x * a) +
-      d * Math.cos(y * a);
-      // Assumes white background with black attractor
-    return [nx, ny];
+    return [Math.sin(y * b) -
+      c * Math.sin(x * b), Math.sin(x * a) +
+      d * Math.cos(y * a)];
   }
   pixelx(x) {
     let px = Math.floor(((x - xmin) / xRange) * this.width);
