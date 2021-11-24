@@ -16,12 +16,17 @@ var nTouched = 0;
 var nMaxed = 0;
 var bufferSize = 0;
 var savedBuffer = null;
+var dataView = null;
+var decPixelTime = 0;
+var decPixelDataViewTime = 0;
+var calculateTime = 0;
 
 
 export class AttractorObj {
   constructor(randomize, width, height) {
     //this.x = 0.1;
     //this.y = 0.1;
+   
     this.width = width;
     this.iters = 0;
     this.loopCount = 0;
@@ -51,13 +56,14 @@ export class AttractorObj {
       this.data = new Uint8ClampedArray(width * height * 4); // RGBA
       this.data.fill(255);
       savedBuffer = this.data;
+      dataView =  new DataView(this.data.buffer);
     /* eslint-disable no-console */
       console.log ( "New AttractorObj allocating ", bufferSize );
     /* eslint-enable no-console */
     } else {
       this.data = savedBuffer;
           /* eslint-disable no-console */
-          console.log ( "Initializing bytes ", bufferSize );
+          // console.log ( "Initializing bytes ", bufferSize );
           /* eslint-enable no-console */
       this.data.fill(255);
     }
@@ -86,8 +92,17 @@ export class AttractorObj {
       }
       xRange = xmax - xmin;
       yRange = ymax - ymin;
+      console.log (" DecPixelTime:         " + decPixelTime);
+      console.log (" DecPixelDataViewTime: " +  decPixelDataViewTime);
+      console.log (" calculateTime: " +  calculateTime);
+      console.log("Pecent in DecPixel: " + (Math.max(decPixelTime, decPixelDataViewTime)*100)/Math.max(calculateTime, 1));
+      decPixelTime = 0;
+      decPixelDataViewTime = 0;
+      calculateTime = 0;
+      
 
     } else {
+      calculateTime -= performance.now();
       while (msElapsed < budget) {
         this.iters++;
         loopCount++;
@@ -98,6 +113,7 @@ export class AttractorObj {
         }
       
       }
+      calculateTime += performance.now();
    }
     return loopCount; //
   }
@@ -128,6 +144,7 @@ export class AttractorObj {
   }
 
   decPixel(x, y) {
+    decPixelTime -= performance.now();
     let i = (y * this.width + x) * 4;
     if (this.data[i] == 255) {
       nTouched++;
@@ -140,6 +157,20 @@ export class AttractorObj {
       this.data[i + 1] -= 1;
       this.data[i + 2] -= 1;
     }
-    // this.data[i + 3] = 255;
+    decPixelTime += performance.now();
+  }
+  decPixelDataView (x, y) {
+    decPixelDataViewTime -= performance.now();
+    let idx = (y * this.width + x) * 4 ;
+    if (this.data[idx] == 255) {
+      nTouched++;
+    }
+    if (this.data[idx] == 1) {
+      nMaxed++;
+    }
+    if (this.data[idx] > 0) {
+      dataView.setUint32(idx, dataView.getUint32(idx) - 0x01010100);
+    }
+    decPixelDataViewTime += performance.now();
   }
 }
