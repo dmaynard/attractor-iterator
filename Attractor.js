@@ -90,6 +90,7 @@ export class AttractorObj {
         if (y < ymin) ymin = y;
         if (y > ymax) ymax = y;
       }
+      console.log (" xmin:" + xmin + "  xmax " + xmax + " ymin " + ymin + " yman " + ymax);
       xRange = xmax - xmin;
       yRange = ymax - ymin;
       console.log (" DecPixelTime:         " + decPixelTime);
