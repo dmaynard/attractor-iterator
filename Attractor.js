@@ -68,13 +68,13 @@ export class AttractorObj {
       this.data.fill(255);
     }
   }
-  getnTouched() {
+  getn_touched() {
     return nTouched;
   }
-  getnMaxed() {
+  getn_maxed() {
     return nMaxed;
   }
-  calculateFrame(budget, firstFrame, nFirstFrames) {
+  calculate_frame(budget, firstFrame, nFirstFrames) {
     let startTime = performance.now();
     let msElapsed = 0;
     let loopCount = 0;
@@ -90,20 +90,13 @@ export class AttractorObj {
         if (y < ymin) ymin = y;
         if (y > ymax) ymax = y;
       }
-      console.log (" xmin:" + xmin + "  xmax " + xmax + " ymin " + ymin + " yman " + ymax);
       xRange = xmax - xmin;
       yRange = ymax - ymin;
-      console.log (" DecPixelTime:         " + decPixelTime);
-      console.log (" DecPixelDataViewTime: " +  decPixelDataViewTime);
-      console.log (" calculateTime: " +  calculateTime);
-      console.log("Pecent in DecPixel: " + (Math.max(decPixelTime, decPixelDataViewTime)*100)/Math.max(calculateTime, 1));
-      decPixelTime = 0;
-      decPixelDataViewTime = 0;
-      calculateTime = 0;
+     
       
 
     } else {
-      calculateTime -= performance.now();
+     
       while (msElapsed < budget) {
         this.iters++;
         loopCount++;
@@ -114,7 +107,7 @@ export class AttractorObj {
         }
       
       }
-      calculateTime += performance.now();
+     
    }
     return loopCount; //
   }
@@ -140,7 +133,7 @@ export class AttractorObj {
   }
 
   decPixel(x, y) {
-    decPixelTime -= performance.now();
+   
     let i = (y * this.width + x) * 4;
     if (this.data[i] == 255) {
       nTouched++;
@@ -153,20 +146,10 @@ export class AttractorObj {
       this.data[i + 1] -= 1;
       this.data[i + 2] -= 1;
     }
-    decPixelTime += performance.now();
+   
   }
-  decPixelDataView (x, y) {
-    decPixelDataViewTime -= performance.now();
-    let idx = (y * this.width + x) * 4 ;
-    if (this.data[idx] == 255) {
-      nTouched++;
-    }
-    if (this.data[idx] == 1) {
-      nMaxed++;
-    }
-    if (this.data[idx] > 0) {
-      dataView.setUint32(idx, dataView.getUint32(idx) - 0x01010100);
-    }
-    decPixelDataViewTime += performance.now();
+ 
+  free_pixels() { 
+    // only needed in the Rust module
   }
 }
