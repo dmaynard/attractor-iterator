@@ -23,27 +23,22 @@ var calculateTime = 0;
 
 
 export class AttractorObj {
-  constructor(randomize, width, height) {
+  constructor( width, height, x, y, pa, pb, pc, pd) {
     //this.x = 0.1;
     //this.y = 0.1;
-   
+    a = pa;
+    b = pb;
+    c = pc;
+    d = pd;
+    x = x;
+    y = y;
     this.width = width;
     this.iters = 0;
     this.loopCount = 0;
     this.height = height;
     nTouched = 0;
     nMaxed = 0;
-    if (randomize) {
-      a = 3.0 * (Math.random() * 2.0 - 1.0);
-      b = 3.0 * (Math.random() * 2.0 - 1.0);
-      c = Math.random() * 2.0 - 1.0 + 0.5;
-      d = Math.random() * 2.0 - 1.0 + 0.5;
-    } else { 
-      a = -2.3983540752995394;
-      b = -1.8137134453341095;
-      c = 0.010788338377923257;
-      d = 1.0113015602664608;
-    }
+  
     xmax = -100.0;
     xmin = 100.0;
     ymax = -100.0;
